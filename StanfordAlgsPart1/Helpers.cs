@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StanfordAlgs1
+namespace StanfordAlgsPart1
 {
-    class Helpers
+    public class Helpers
     {
         public static void PrintValues(Array myArr)
         {

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace StanfordAlgs1
+namespace StanfordAlgsPart1
 {
-    class Sorts
+    public class Sorts
     {
         public static int[] SelectionSort(int[] arr)
         {
