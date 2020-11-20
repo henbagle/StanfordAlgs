@@ -92,6 +92,64 @@ namespace StanfordAlgsPart1
 
         public static int[] MergeSort(int[] arr)
         {
+            int[] a = (int[])arr.Clone();
+            if(a.Length == 1)
+            {
+                return a;
+            }
+            else
+            {
+                int[] a1;
+                int[] a2 = new int[a.Length / 2];
+
+                if (a.Length % 2 == 1)
+                {
+                    a1 = new int[(a.Length / 2) + 1];
+                    Array.Copy(a, a1, a.Length / 2 + 1);
+                }
+                else
+                {
+                    a1 = new int[a.Length / 2];
+                    Array.Copy(a, a1, a.Length / 2);
+                }
+                Array.Copy(a, a1.Length, a2, 0, (a.Length / 2));
+                return Merge(MergeSort(a1), MergeSort(a2));
+
+            }
+        }
+
+        // Merges two sorted arrays
+        private static int[] Merge(int[] a, int[] b)
+        {
+            int ai = 0;
+            int bi = 0;
+            int[] arr = new int[(a.Length + b.Length)];
+
+            for(int k = 0; k < arr.Length; k++)
+            {
+
+                if (bi == b.Length)
+                {
+                    arr[k] = a[ai];
+                    ai++;
+                }
+                else if (ai == a.Length)
+                {
+                    arr[k] = b[bi];
+                    bi++;
+                }
+                else if(a[ai] <= b[bi])
+                {
+                    arr[k] = a[ai];
+                    ai++;
+                }
+                else
+                {
+                    arr[k] = b[bi];
+                    bi++;
+                }
+            }
+
             return arr;
         }
     }
