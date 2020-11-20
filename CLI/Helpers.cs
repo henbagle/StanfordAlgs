@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StanfordAlgsPart1
+namespace StanfordAlgsCLI
 {
     public class Helpers
     {
