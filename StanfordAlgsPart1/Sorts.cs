@@ -93,17 +93,15 @@ namespace StanfordAlgsPart1
         public static int[] MergeSort(int[] arr)
         {
             int[] a = (int[])arr.Clone();
-            if(a.Length == 1)
-            {
-                return a;
-            }
+            if(a.Length == 1) return a; // Base case
             else
             {
+                // Split the input array in half
                 int[] a1;
                 int[] a2 = new int[a.Length / 2];
 
                 if (a.Length % 2 == 1)
-                {
+                { // Handle odd n arrays
                     a1 = new int[(a.Length / 2) + 1];
                     Array.Copy(a, a1, a.Length / 2 + 1);
                 }
@@ -112,7 +110,10 @@ namespace StanfordAlgsPart1
                     a1 = new int[a.Length / 2];
                     Array.Copy(a, a1, a.Length / 2);
                 }
+
                 Array.Copy(a, a1.Length, a2, 0, (a.Length / 2));
+
+                // Sort both halfs, then merge them together
                 return Merge(MergeSort(a1), MergeSort(a2));
 
             }
@@ -125,25 +126,29 @@ namespace StanfordAlgsPart1
             int bi = 0;
             int[] arr = new int[(a.Length + b.Length)];
 
+            // Loop through the output array
             for(int k = 0; k < arr.Length; k++)
             {
+                // Step through each array in parallel, committing the smallest value of the two
+                // to the output array, then looking at the next value in that input array
 
-                if (bi == b.Length)
+                // Handle what happens when you reach the end of an array
+                if (bi == b.Length) // At the end of the b array
                 {
                     arr[k] = a[ai];
                     ai++;
                 }
-                else if (ai == a.Length)
+                else if (ai == a.Length) // at the end of the a array
                 {
                     arr[k] = b[bi];
                     bi++;
                 }
-                else if(a[ai] <= b[bi])
+                else if(a[ai] <= b[bi]) // a value is smaller
                 {
                     arr[k] = a[ai];
                     ai++;
                 }
-                else
+                else // b value is smaller
                 {
                     arr[k] = b[bi];
                     bi++;
