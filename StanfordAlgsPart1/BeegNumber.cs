@@ -6,14 +6,16 @@ namespace StanfordAlgsPart1
 {
     // A class to store and process very large numbers (larger than a UInt64).
     // Can add and subtract two BeegNumbers together, as well as pad them with zeros.
+    // Going negative with either operation will cause chaos! Don't do that.
     // Cannot multiply. Please use Karatsuba.cs to do that.
     // Division is stupid. We don't do that here.
     public class BeegNumber
     {
         private string _str;
-        public bool isNeg = false;
+        public bool isNeg = false; // This doesn't do anything
         public string String { get => _str; }
 
+        // Two overloaded constructors
         public BeegNumber(string number) => _str = number;
         public BeegNumber(int number) => _str = number.ToString();
 
@@ -22,14 +24,16 @@ namespace StanfordAlgsPart1
             return String.Length;
         }
 
+        // Wrapper for AddVal
         public void Add(BeegNumber a)
         {
             _str = AddVal(a);
         }
 
+        // Adds this beegNumber with the input BeegNumber, returns a string
         public string AddVal(BeegNumber a)
         {
-            if (isNeg && !a.isNeg)
+            if (isNeg && !a.isNeg) // This does nothing.                    TODO: Make negative numbers work
             {
                 return a.SubtractVal(this);
             }
@@ -89,6 +93,7 @@ namespace StanfordAlgsPart1
             
         }
 
+        // Subtracts the input BeegNumber from this here BeegNumber
         public string SubtractVal(BeegNumber a)
         {
             bool isNeg = this.isNeg;
@@ -146,6 +151,7 @@ namespace StanfordAlgsPart1
             }
         }
 
+        // Wrapper for SubtractVal
         public void Subtract(BeegNumber a)
         {
             string newVal = SubtractVal(a);
