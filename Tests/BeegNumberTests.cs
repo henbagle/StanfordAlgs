@@ -13,11 +13,11 @@ namespace Tests
             BeegNumber add = new BeegNumber("12");
             Assert.AreEqual("12", test.String);
             Assert.AreEqual("12", add.String);
-            test.Add(add);
+            test.AddTo(add);
             Assert.AreEqual("24", test.String);
-            test.Add(new BeegNumber("4000"));
+            test.AddTo(new BeegNumber("4000"));
             Assert.AreEqual("4024", test.String);
-            test.Add(new BeegNumber(3));
+            test.AddTo(new BeegNumber(3));
             Assert.AreEqual("4027", test.String);
         }
 
@@ -26,12 +26,12 @@ namespace Tests
         {
             BeegNumber test = new BeegNumber(5);
 
-            test.Subtract(new BeegNumber(2));
+            test.SubtractFrom(new BeegNumber(2));
             Assert.AreEqual("3", test.String);
 
 
             test = new BeegNumber(321);
-            test.Subtract(new BeegNumber(23));
+            test.SubtractFrom(new BeegNumber(23));
             Assert.AreEqual("298", test.String);
 
         }

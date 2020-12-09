@@ -62,18 +62,19 @@ namespace StanfordAlgsPart1
             BeegNumber ac = new BeegNumber(KaratsubaMultiply(a.String, c.String));
             BeegNumber bd = new BeegNumber(KaratsubaMultiply(b.String, d.String));
 
-            a.Add(b);
-            c.Add(d);
-            BeegNumber adbc = new BeegNumber(KaratsubaMultiply(a.String, c.String));
-            adbc.Subtract(bd);
-            adbc.Subtract(ac);
+            BeegNumber ab = BeegNumber.AddVal(a, b);
+            BeegNumber cd = BeegNumber.AddVal(c, d);
+            BeegNumber adbc = new BeegNumber(KaratsubaMultiply(ab.String, cd.String));
+
+            BeegNumber subt = new BeegNumber(BeegNumber.SubtractVal(adbc, bd));
+            subt.SubtractFrom(ac);
 
             ac.Pad(maxLength);
-            adbc.Pad(maxLength / 2);
+            subt.Pad(maxLength / 2);
 
-            ac.Add(bd);
-            ac.Add(adbc);
-            return (ac.String);
+            BeegNumber total = BeegNumber.AddVal(subt, bd);
+            total.AddTo(ac);
+            return (total.String);
 
         }
 

@@ -16,30 +16,46 @@ namespace StanfordAlgsPart1
         public string String { get => _str; }
 
         // Two overloaded constructors
-        public BeegNumber(string number) => _str = number;
-        public BeegNumber(int number) => _str = number.ToString();
-
+        public BeegNumber(string number) {
+            if(number[0] == '-')
+            {
+                _str = number.Substring(1);
+                isNeg = true;
+            }
+            else
+            {
+                _str = number;
+            }
+        }
+        public BeegNumber(int number)
+        {
+            if(number < 0)
+            {
+                isNeg = true;
+            }
+            _str = Math.Abs(number).ToString();
+        }
         public int Length()
         {
             return String.Length;
         }
 
         // Wrapper for AddVal
-        public void Add(BeegNumber a)
+        public void AddTo(BeegNumber a)
         {
-            _str = AddVal(a);
+            _str = AddVal(this, a).String;
         }
 
         // Adds this beegNumber with the input BeegNumber, returns a string
-        public string AddVal(BeegNumber a)
+        public static BeegNumber AddVal(BeegNumber a, BeegNumber b)
         {
-            if (isNeg && !a.isNeg) // This does nothing.                    TODO: Make negative numbers work
+            if (a.isNeg && !b.isNeg) // This does nothing.                    TODO: Make negative numbers work
             {
-                return a.SubtractVal(this);
+                return new BeegNumber(SubtractVal(b, a));
             }
-            else if (a.isNeg && !isNeg)
+            else if (b.isNeg && !a.isNeg)
             {
-                return SubtractVal(a);
+                return new BeegNumber(SubtractVal(a, b));
             }
             else
             {
@@ -48,8 +64,8 @@ namespace StanfordAlgsPart1
 
                 // Set up some char[]s of the numbers we're adding, and a variable to handle the carry;
                 int carry = 0;
-                char[] str = ReverseStringToArray(_str);
-                char[] add = ReverseStringToArray(a);
+                char[] str = ReverseStringToArray(a);
+                char[] add = ReverseStringToArray(b);
 
                 // Loop over the entire number we're trying to add (plus two extra places to handle carrying)
                 for (int i = 0; i <= add.Length + 1; i++)
@@ -88,18 +104,18 @@ namespace StanfordAlgsPart1
                     if (sumStr.Length > 1) carry = (int)char.GetNumericValue(sumStr[1]);
                     else carry = 0;
                 }
-                return ReverseArrayToString(str);
+                return new BeegNumber(ReverseArrayToString(str));
             }
             
         }
 
         // Subtracts the input BeegNumber from this here BeegNumber
-        public string SubtractVal(BeegNumber a)
+        public static string SubtractVal(BeegNumber a, BeegNumber b)
         {
-            bool isNeg = this.isNeg;
+            bool isNeg = a.isNeg;
             int carry = 0;
-            char[] str = ReverseStringToArray(_str);
-            char[] subt = ReverseStringToArray(a);
+            char[] str = ReverseStringToArray(a);
+            char[] subt = ReverseStringToArray(b);
 
             //if(subt.Length > str.Length) // || char.GetNumericValue(subt[subt.GetUpperBound(0)]) > char.GetNumericValue(str[str.GetUpperBound(0)])
             //{ // This doesn't totally cover the case for subtracting to get a negative number, but wednesday's tuesday, what can i say?.
@@ -147,14 +163,14 @@ namespace StanfordAlgsPart1
             }
             else
             {
-                return ReverseArrayToString(str);
+                return (ReverseArrayToString(str));
             }
         }
 
         // Wrapper for SubtractVal
-        public void Subtract(BeegNumber a)
+        public void SubtractFrom(BeegNumber a)
         {
-            string newVal = SubtractVal(a);
+            string newVal = SubtractVal(this, a);
             if (newVal[0].Equals('-')){
                 _str = newVal.Substring(1);
                 isNeg = true;
@@ -181,7 +197,7 @@ namespace StanfordAlgsPart1
             _str = String + zeros;
         }
 
-        private char[] ReverseStringToArray(BeegNumber r)
+        private static char[] ReverseStringToArray(BeegNumber r)
         {
             // Reverse the number and convert it to a char[].
             // We reverse it because its a lot easier to work up from the 1s place that way.
@@ -190,7 +206,7 @@ namespace StanfordAlgsPart1
             return arr;
         }
 
-        private char[] ReverseStringToArray(string r)
+        private static char[] ReverseStringToArray(string r)
         {
             // Overload of last function with a string instead of another BeegNumber
             char[] arr = r.ToCharArray();
@@ -198,7 +214,7 @@ namespace StanfordAlgsPart1
             return arr;
         }
 
-        private string ReverseArrayToString(char[] arr)
+        private static string ReverseArrayToString(char[] arr)
         {
             // Put the array back in readable order
             Array.Reverse(arr);
@@ -208,7 +224,7 @@ namespace StanfordAlgsPart1
             return new string(arr, startPoint, (arr.Length-startPoint));
         }
 
-        private int GetLeadingZerosLocation(char[] arr)
+        private static int GetLeadingZerosLocation(char[] arr)
         {
             for(int i = 0; i<arr.Length; i++)
             {
