@@ -4,10 +4,10 @@ using System.Text;
 
 namespace StanfordAlgsPart1
 {
+    // WEEK 1 - PROBLEM SET 1
     public class Karatsuba
     {
-        // Multiplies large numbers as strings.
-        // If numbers aren't around the same number of digits, all hell will probably break loose.
+        // Multiplies large numbers as strings using the BeegNumber.
         public static string KaratsubaMultiply(string x, string y)
         {
             if(Math.Min(y.Length, x.Length) == 0)

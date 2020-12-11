@@ -4,6 +4,7 @@ using System.Text;
 
 namespace StanfordAlgsPart1
 {
+    // WEEK 2 - Implemented independently
     public class Search
     {
         // Search through a sorted list to find a target element

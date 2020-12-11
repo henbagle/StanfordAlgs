@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StanfordAlgsPart1
 {
+    // WEEK 1 - PROBLEM SET 1
+
     // A class to store and process very large numbers (larger than a UInt64).
     // Can add and subtract two BeegNumbers together, as well as pad them with zeros.
     // Going negative with either operation will cause chaos! Don't do that.
-    // Cannot multiply. Please use Karatsuba.cs to do that.
+    // Cannot multiply. Use Karatsuba.cs to do that. TODO: Implement that as part of the base class
     // Division is stupid. We don't do that here.
     public class BeegNumber
     {

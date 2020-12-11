@@ -4,6 +4,9 @@ namespace StanfordAlgsPart1
 {
     public class Sorts
     {
+        // WEEK 1 - Implemented independently
+        // Todo: Can we use generic Arrays/IComparable[] to sort instead of int[]?
+
         public static int[] SelectionSort(int[] arr)
         {
             // Create a shallow copy
