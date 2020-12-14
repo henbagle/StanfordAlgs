@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Globalization;
 
 namespace StanfordAlgsPart1
 {
@@ -93,22 +95,22 @@ namespace StanfordAlgsPart1
             return a;
         }
 
-        public static int[] MergeSort(int[] arr)
+        public static Array MergeSort(Array arr)
         {
-            int[] a = (int[])arr.Clone();
-            if(a.Length == 1) return a; // Base case
+            if(arr.Length == 1) return arr; // Base case
             else
             {
                 // Split the input array in half
-                int[] a1;
-                int[] a2 = new int[a.Length / 2];
+                Type elType = arr.GetType().GetElementType();
+                Array a1;
+                Array a2 = Array.CreateInstance(elType, arr.Length / 2);
 
                 // Handle odd n arrays
-                if (a.Length % 2 == 1) a1 = new int[(a.Length / 2) + 1];
-                else a1 = new int[a.Length / 2];
+                if (arr.Length % 2 == 1) a1 = Array.CreateInstance(elType, (arr.Length / 2) + 1);
+                else a1 = Array.CreateInstance(elType, arr.Length / 2);
 
-                Array.Copy(a, a1, a1.Length);
-                Array.Copy(a, a1.Length, a2, 0, (a.Length / 2));
+                Array.Copy(arr, a1, a1.Length);
+                Array.Copy(arr, a1.Length, a2, 0, (arr.Length / 2));
 
                 // Sort both halfs, then merge them together
                 return Merge(MergeSort(a1), MergeSort(a2));
@@ -117,37 +119,49 @@ namespace StanfordAlgsPart1
         }
 
         // Merges two sorted arrays
-        private static int[] Merge(int[] a, int[] b)
+        private static Array Merge(Array a, Array b)
         {
             int ai = 0;
             int bi = 0;
-            int[] arr = new int[(a.Length + b.Length)];
+            IEnumerator aNumerator = a.GetEnumerator();
+            aNumerator.MoveNext();
+            IEnumerator bNumerator = b.GetEnumerator();
+            bNumerator.MoveNext();
+
+            Comparer comp = new Comparer(new CultureInfo("es-ES", false));
+
+            Array arr = Array.CreateInstance(a.GetType().GetElementType(), (a.Length + b.Length));
 
             // Loop through the output array
             for(int k = 0; k < arr.Length; k++)
             {
                 // Step through each array in parallel, committing the smallest value of the two
                 // to the output array, then looking at the next value in that input array
+                
 
                 // Handle what happens when you reach the end of an array
                 if (bi == b.Length) // At the end of the b array
                 {
-                    arr[k] = a[ai];
+                    arr.SetValue(aNumerator.Current, k);
+                    aNumerator.MoveNext();
                     ai++;
                 }
                 else if (ai == a.Length) // at the end of the a array
                 {
-                    arr[k] = b[bi];
+                    arr.SetValue(bNumerator.Current, k);
+                    bNumerator.MoveNext();
                     bi++;
                 }
-                else if(a[ai] <= b[bi]) // a value is smaller
+                else if(comp.Compare(aNumerator.Current, bNumerator.Current) < 0) // a value is smaller
                 {
-                    arr[k] = a[ai];
+                    arr.SetValue(aNumerator.Current, k);
+                    aNumerator.MoveNext();
                     ai++;
                 }
                 else // b value is smaller
                 {
-                    arr[k] = b[bi];
+                    arr.SetValue(bNumerator.Current, k);
+                    bNumerator.MoveNext();
                     bi++;
                 }
             }
