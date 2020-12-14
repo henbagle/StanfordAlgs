@@ -19,6 +19,8 @@ namespace Tests
             CollectionAssert.AreEqual(b, Karatsuba.SplitIntInHalf("1612"));
             CollectionAssert.AreEqual(c, Karatsuba.SplitIntInHalf("112"));
             CollectionAssert.AreEqual(d, Karatsuba.SplitIntInHalf("485231333"));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => Karatsuba.SplitIntInHalf("1"));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => Karatsuba.SplitIntInHalf(""));
         }
 
         [TestMethod]

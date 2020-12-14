@@ -103,17 +103,11 @@ namespace StanfordAlgsPart1
                 int[] a1;
                 int[] a2 = new int[a.Length / 2];
 
-                if (a.Length % 2 == 1)
-                { // Handle odd n arrays
-                    a1 = new int[(a.Length / 2) + 1];
-                    Array.Copy(a, a1, a.Length / 2 + 1);
-                }
-                else
-                {
-                    a1 = new int[a.Length / 2];
-                    Array.Copy(a, a1, a.Length / 2);
-                }
+                // Handle odd n arrays
+                if (a.Length % 2 == 1) a1 = new int[(a.Length / 2) + 1];
+                else a1 = new int[a.Length / 2];
 
+                Array.Copy(a, a1, a1.Length);
                 Array.Copy(a, a1.Length, a2, 0, (a.Length / 2));
 
                 // Sort both halfs, then merge them together
