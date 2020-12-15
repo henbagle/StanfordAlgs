@@ -37,17 +37,10 @@ namespace StanfordAlgsPart1
             }
             else
             {
-                // Set up left and right half arrays
-                int mid = arr.Length / 2;
 
-                int[] left;
-                if (arr.Length % 2 != 0) left = new int[mid + 1];
-                else left = new int[mid];
-
-                int[] right = new int[mid];
-
-                Array.Copy(arr, 0, left, 0, left.Length);
-                Array.Copy(arr, left.Length, right, 0, right.Length);
+                (Array leftArr, Array rightArr) = Sorts.SplitArrayInHalf(arr);
+                int[] left = (int[])leftArr;
+                int[] right = (int[])rightArr; // this kills the programmer
 
                 // Recursively check left side, right side, split inversions
                 Inversions leftInvs = new Inversions(left);

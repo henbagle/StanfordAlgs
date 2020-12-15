@@ -95,78 +95,97 @@ namespace StanfordAlgsPart1
             return a;
         }
 
-        public static Array MergeSort(Array arr)
+        public static T[] MergeSort<T>(T[] arr)
+            where T : IComparable<T>
         {
             if(arr.Length == 1) return arr; // Base case
             else
             {
-                // Split the input array in half
-                Type elType = arr.GetType().GetElementType();
-                Array a1;
-                Array a2 = Array.CreateInstance(elType, arr.Length / 2);
-
-                // Handle odd n arrays
-                if (arr.Length % 2 == 1) a1 = Array.CreateInstance(elType, (arr.Length / 2) + 1);
-                else a1 = Array.CreateInstance(elType, arr.Length / 2);
-
-                Array.Copy(arr, a1, a1.Length);
-                Array.Copy(arr, a1.Length, a2, 0, (arr.Length / 2));
-
+                (T[] a1, T[] a2) = SplitArrayInHalf(arr);
                 // Sort both halfs, then merge them together
-                return Merge(MergeSort(a1), MergeSort(a2));
+                return Merge(MergeSort(a1), MergeSort(a2), null);
 
             }
         }
 
-        // Merges two sorted arrays
-        private static Array Merge(Array a, Array b)
+        public static T[] MergeSort<T>(T[] arr, Func<T, T, int> compare)
+            where T : IComparable<T>
         {
+            if (arr.Length == 1) return arr; // Base case
+            else
+            {
+                (T[] a1, T[] a2) = SplitArrayInHalf(arr);
+                // Sort both halfs, then merge them together
+                return Merge(MergeSort(a1, compare), MergeSort(a2, compare), compare);
+
+            }
+        }
+
+        public static (T[], T[]) SplitArrayInHalf<T>(T[] arrayToSplit)
+            where T : IComparable<T>
+        {
+            if (arrayToSplit.Length <= 1) throw new ArgumentOutOfRangeException("Input must have two or more elements.");
+
+            // Create new arrays based on input N size
+            T[] left;
+            T[] right = new T[arrayToSplit.Length / 2];
+
+            // Handle odd n arrays for left side
+            if (arrayToSplit.Length % 2 == 1) left = new T[(arrayToSplit.Length / 2) + 1];
+            else left = new T[ arrayToSplit.Length / 2];
+
+            // Copy over values from the original to the two arrays
+            Array.Copy(arrayToSplit, left, left.Length);
+            Array.Copy(arrayToSplit, left.Length, right, 0, (arrayToSplit.Length / 2));
+
+            // Return tuple of arrays
+            return (left, right);
+        }
+
+        // Merges two sorted arrays
+        private static T[] Merge<T>(T[] a, T[] b, Func<T, T, int> userCompare)
+            where T : IComparable<T>
+        {
+            T[] @out = new T[a.Length + b.Length];
             int ai = 0;
             int bi = 0;
-            IEnumerator aNumerator = a.GetEnumerator();
-            aNumerator.MoveNext();
-            IEnumerator bNumerator = b.GetEnumerator();
-            bNumerator.MoveNext();
 
-            Comparer comp = new Comparer(new CultureInfo("es-ES", false));
+            // Set a default compare function if there is no specified one
+            Func<T, T, int> compareFunction;
+            if (userCompare == null) compareFunction = (a, b) => { return a.CompareTo(b); }; // use default type CompareTo behavior
+            else compareFunction = userCompare;
 
-            Array arr = Array.CreateInstance(a.GetType().GetElementType(), (a.Length + b.Length));
 
             // Loop through the output array
-            for(int k = 0; k < arr.Length; k++)
+            for(int k = 0; k < @out.Length; k++)
             {
                 // Step through each array in parallel, committing the smallest value of the two
                 // to the output array, then looking at the next value in that input array
                 
-
-                // Handle what happens when you reach the end of an array
+                // First two ifs handle what happens when you reach the end of an array
                 if (bi == b.Length) // At the end of the b array
                 {
-                    arr.SetValue(aNumerator.Current, k);
-                    aNumerator.MoveNext();
+                    @out[k] = a[ai];
                     ai++;
                 }
                 else if (ai == a.Length) // at the end of the a array
                 {
-                    arr.SetValue(bNumerator.Current, k);
-                    bNumerator.MoveNext();
+                    @out[k] = b[bi];
                     bi++;
                 }
-                else if(comp.Compare(aNumerator.Current, bNumerator.Current) < 0) // a value is smaller
+                else if(compareFunction(a[ai], b[bi]) < 0) // a value is smaller
                 {
-                    arr.SetValue(aNumerator.Current, k);
-                    aNumerator.MoveNext();
+                    @out[k] = a[ai];
                     ai++;
                 }
                 else // b value is smaller
                 {
-                    arr.SetValue(bNumerator.Current, k);
-                    bNumerator.MoveNext();
+                    @out[k] = b[bi];
                     bi++;
                 }
             }
 
-            return arr;
+            return @out;
         }
     }
 }
