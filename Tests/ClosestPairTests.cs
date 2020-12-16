@@ -29,7 +29,7 @@ namespace Tests
         [TestMethod]
         public void FindsClosestPairWhenNotSplit()
         {
-            Point[] pairs = { new Point(1, 5), new Point(2, 4), new Point(4, 1), new Point(8, 0)};
+            Point[] pairs = { new Point(1, 5), new Point(2, 4), new Point(4, 1), new Point(8, 0) };
             Point[] pairs2 = { new Point(4, 1), new Point(8, 0), pairs[0], pairs[1], new Point(100, 120), new Point(200, 250), new Point(400, 500) };
             (Point, Point) solution = (pairs[0], pairs[1]);
             Assert.AreEqual(solution, new ClosestPair(pairs).FindClosestPair());

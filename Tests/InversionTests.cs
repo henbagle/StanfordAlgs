@@ -8,7 +8,7 @@ namespace Tests
     {
         private int[] tenOdd = { 5, 4, 3, 2, 1 };
         private int[] sevOdd = { 5, 1, 2, 3, 0 };
-        private int[] oneEven = { 1, 3, 2, 4};
+        private int[] oneEven = { 1, 3, 2, 4 };
         private int[] oneEl = { 1 };
         private int[] noEl = { };
         private int[] noInvs = { 1, 2, 3, 4 };

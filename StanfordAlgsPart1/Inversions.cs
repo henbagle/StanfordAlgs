@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Numerics;
 using System.Collections.Generic;
-using System.Text;
+using System.Numerics;
 
 namespace StanfordAlgsPart1
 {
@@ -15,6 +14,7 @@ namespace StanfordAlgsPart1
 
         //private int[] originalArr;
         private int[] arr; // This gets mutated and sorted
+
         public BigInteger invCount;
         public Tuple<int, int>[] inversions; // Using tuples was a dumbo idea (i stopped, this should only ever be length 0 now)
 
@@ -37,7 +37,6 @@ namespace StanfordAlgsPart1
             }
             else
             {
-
                 (Array leftArr, Array rightArr) = Sorts.SplitArrayInHalf(arr);
                 int[] left = (int[])leftArr;
                 int[] right = (int[])rightArr; // this kills the programmer
@@ -52,7 +51,7 @@ namespace StanfordAlgsPart1
         }
 
         // Subroutine to mergesort and count up all the split inversions while we're at it.
-        void MergeAndCountSplitInversions(Inversions left, Inversions right)
+        private void MergeAndCountSplitInversions(Inversions left, Inversions right)
         {
             // This is the exact same as the merge subroutine from merge sort
             // Except there's an extra part about figuring out all the inversions
@@ -91,12 +90,11 @@ namespace StanfordAlgsPart1
                     arr[k] = right.arr[bi];
                     bi++;
                 }
-
             }
         }
 
         // Subroutine to get split inversions between two arrays, and also merge. Never used anymo.
-        void MergeAndFindSplitInversions(Inversions left, Inversions right)
+        private void MergeAndFindSplitInversions(Inversions left, Inversions right)
         {
             // This is the exact same as the merge subroutine from merge sort
             // Except there's an extra part about figuring out all the inversions
@@ -131,14 +129,13 @@ namespace StanfordAlgsPart1
                 {
                     // Loop over the rest of the A array adding inversions - i think this makes the algorithm not n log(n) any longer - probably n^2
                     // If we were to just keep a running count of the NUMBER of inversions instead of actually figuring them all out, it would be n log n
-                    for(int ai2 = ai; ai2 < left.arr.Length; ai2++)
+                    for (int ai2 = ai; ai2 < left.arr.Length; ai2++)
                     {
                         splitInvs.Add(Tuple.Create(left.arr[ai2], right.arr[bi]));
                     }
                     arr[k] = right.arr[bi];
                     bi++;
                 }
-
             }
 
             // Sum the resulting Tuple arrays together

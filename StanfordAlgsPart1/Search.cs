@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StanfordAlgsPart1
+﻿namespace StanfordAlgsPart1
 {
     // WEEK 2 - Implemented independently
     public class Search
@@ -24,9 +20,9 @@ namespace StanfordAlgsPart1
                 }
 
                 // Target is above middle, look at upper half
-                if(arr[middleIndex] < target)
+                if (arr[middleIndex] < target)
                 {
-                    startIndex = middleIndex + 1; // We've already looked at middle, so we can start one away from it. 
+                    startIndex = middleIndex + 1; // We've already looked at middle, so we can start one away from it.
                     // It also ensures that if we can't find the element, endIndex is less than startIndex.
                 }
                 else // Look at bottom half
@@ -35,7 +31,6 @@ namespace StanfordAlgsPart1
                 }
             }
             return -1;
-
         }
     }
 }

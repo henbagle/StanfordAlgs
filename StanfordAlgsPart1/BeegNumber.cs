@@ -16,8 +16,9 @@ namespace StanfordAlgsPart1
         public string String { get => _str; }
 
         // Two overloaded constructors
-        public BeegNumber(string number) {
-            if(number[0] == '-')
+        public BeegNumber(string number)
+        {
+            if (number[0] == '-')
             {
                 _str = number.Substring(1);
                 isNeg = true;
@@ -27,14 +28,16 @@ namespace StanfordAlgsPart1
                 _str = number;
             }
         }
+
         public BeegNumber(int number)
         {
-            if(number < 0)
+            if (number < 0)
             {
                 isNeg = true;
             }
             _str = Math.Abs(number).ToString();
         }
+
         public int Length()
         {
             return String.Length;
@@ -59,7 +62,7 @@ namespace StanfordAlgsPart1
             }
             else
             {
-                // Walks over each char of the string, adding the input number one place at a time. Adds places if it needs to. 
+                // Walks over each char of the string, adding the input number one place at a time. Adds places if it needs to.
                 // Mutates this object.
 
                 // Set up some char[]s of the numbers we're adding, and a variable to handle the carry;
@@ -79,7 +82,7 @@ namespace StanfordAlgsPart1
 
                     int sum;
                     if (i >= add.Length)
-                    { // Case for when you only have carried values left - add the carried value with the current 
+                    { // Case for when you only have carried values left - add the carried value with the current
                         if (carry > 0)
                         {
                             sum = carry + (int)char.GetNumericValue(str[i]);
@@ -106,7 +109,6 @@ namespace StanfordAlgsPart1
                 }
                 return new BeegNumber(ReverseArrayToString(str));
             }
-            
         }
 
         // Subtracts the input BeegNumber from this here BeegNumber
@@ -127,7 +129,7 @@ namespace StanfordAlgsPart1
             {
                 int difference;
                 if (i >= subt.Length)
-                { // Case for when you only have carried values left - subtract the carried value from the current 
+                { // Case for when you only have carried values left - subtract the carried value from the current
                     if (carry > 0)
                     {
                         difference = (int)char.GetNumericValue(str[i]) - carry;
@@ -155,11 +157,10 @@ namespace StanfordAlgsPart1
                     str[i] = diffStr[0];
                     carry = 0;
                 }
-
             }
             if (isNeg)
             {
-                return '-'+ReverseArrayToString(str);
+                return '-' + ReverseArrayToString(str);
             }
             else
             {
@@ -171,7 +172,8 @@ namespace StanfordAlgsPart1
         public void SubtractFrom(BeegNumber a)
         {
             string newVal = SubtractVal(this, a);
-            if (newVal[0].Equals('-')){
+            if (newVal[0].Equals('-'))
+            {
                 _str = newVal.Substring(1);
                 isNeg = true;
             }
@@ -221,12 +223,12 @@ namespace StanfordAlgsPart1
 
             // Figure out how many leading zeros there are, and slice the array from that point on
             int startPoint = GetLeadingZerosLocation(arr);
-            return new string(arr, startPoint, (arr.Length-startPoint));
+            return new string(arr, startPoint, (arr.Length - startPoint));
         }
 
         private static int GetLeadingZerosLocation(char[] arr)
         {
-            for(int i = 0; i<arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 if (!arr[i].Equals('0'))
                 {
@@ -235,6 +237,5 @@ namespace StanfordAlgsPart1
             }
             return 0;
         }
-
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Globalization;
 
 namespace StanfordAlgsPart1
 {
@@ -16,14 +14,13 @@ namespace StanfordAlgsPart1
             int minI;
 
             // Could do this recursively, go through every sub-array ([0...n), [1...n], ... [n-1, n])
-            for(int i = 0; i < a.Length - 1; i++)
+            for (int i = 0; i < a.Length - 1; i++)
             {
                 minI = i;
                 // Go through the whole sub-array looking for the index of the minimum value
-                for (int j = i+1; j < a.Length; j++)
+                for (int j = i + 1; j < a.Length; j++)
                 {
                     if (a[j] < a[minI]) minI = j;
-
                 }
                 // If it's not already at the bottom, put it there
                 if (minI != i)
@@ -69,7 +66,6 @@ namespace StanfordAlgsPart1
             b = BubbleSort(b);
             b.CopyTo(a, 0);
             return a;
-
         }
 
         public static int[] InsertionSort(int[] arr)
@@ -77,13 +73,13 @@ namespace StanfordAlgsPart1
             int[] a = (int[])arr.Clone();
 
             // Loop over every element in the array
-            for(int i=1; i<a.Length; i++)
+            for (int i = 1; i < a.Length; i++)
             {
                 // Starting at that value, compare it with the previous element
                 int j = i;
 
                 // Shift it down until it is larger than the value before it or is the first value
-                while (j > 0 && a[j-1] > a[j])
+                while (j > 0 && a[j - 1] > a[j])
                 {
                     int swap = a[j];
                     a[j] = a[j - 1];
@@ -98,13 +94,12 @@ namespace StanfordAlgsPart1
         public static T[] MergeSort<T>(T[] arr)
             where T : IComparable<T>
         {
-            if(arr.Length == 1) return arr; // Base case
+            if (arr.Length == 1) return arr; // Base case
             else
             {
                 (T[] a1, T[] a2) = SplitArrayInHalf(arr);
                 // Sort both halfs, then merge them together
                 return Merge(MergeSort(a1), MergeSort(a2), null);
-
             }
         }
 
@@ -117,7 +112,6 @@ namespace StanfordAlgsPart1
                 (T[] a1, T[] a2) = SplitArrayInHalf(arr);
                 // Sort both halfs, then merge them together
                 return Merge(MergeSort(a1, compare), MergeSort(a2, compare), compare);
-
             }
         }
 
@@ -132,7 +126,7 @@ namespace StanfordAlgsPart1
 
             // Handle odd n arrays for left side
             if (arrayToSplit.Length % 2 == 1) left = new T[(arrayToSplit.Length / 2) + 1];
-            else left = new T[ arrayToSplit.Length / 2];
+            else left = new T[arrayToSplit.Length / 2];
 
             // Copy over values from the original to the two arrays
             Array.Copy(arrayToSplit, left, left.Length);
@@ -155,13 +149,12 @@ namespace StanfordAlgsPart1
             if (userCompare == null) compareFunction = (a, b) => { return a.CompareTo(b); }; // use default type CompareTo behavior
             else compareFunction = userCompare;
 
-
             // Loop through the output array
-            for(int k = 0; k < @out.Length; k++)
+            for (int k = 0; k < @out.Length; k++)
             {
                 // Step through each array in parallel, committing the smallest value of the two
                 // to the output array, then looking at the next value in that input array
-                
+
                 // First two ifs handle what happens when you reach the end of an array
                 if (bi == b.Length) // At the end of the b array
                 {
@@ -173,7 +166,7 @@ namespace StanfordAlgsPart1
                     @out[k] = b[bi];
                     bi++;
                 }
-                else if(compareFunction(a[ai], b[bi]) < 0) // a value is smaller
+                else if (compareFunction(a[ai], b[bi]) < 0) // a value is smaller
                 {
                     @out[k] = a[ai];
                     ai++;

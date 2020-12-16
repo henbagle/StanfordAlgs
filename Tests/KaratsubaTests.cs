@@ -3,7 +3,7 @@ using StanfordAlgsPart1;
 using System;
 
 namespace Tests
-{   
+{
     [TestClass]
     public class KaratsubaTests
     {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StanfordAlgsPart1
 {
@@ -11,8 +9,10 @@ namespace StanfordAlgsPart1
     {
         public Point[] XRanked;
         public Point[] YRanked;
+
         public ClosestPair(Point[] P)
         {
+            if (P.Length <= 1) throw new ArgumentException("Input list must have at least 2 points");
             XRanked = Sorts.MergeSort(P, (A, B) => { return (int)(A.X - B.X); });
             YRanked = Sorts.MergeSort(P, (A, B) => { return (int)(A.Y - B.Y); });
         }
@@ -44,16 +44,16 @@ namespace StanfordAlgsPart1
 
                 // Smallest value we've already found
                 double delta = Math.Min(Point.EuclideanDistance(p1, q1), Point.EuclideanDistance(p2, q2));
-                
+
                 // Find the closest pair between left and right
                 (Point p3, Point q3) = ClosestSplitPair(PX, PY, delta);
 
                 // Figure out which one is smaller, return that
-                if(Point.EuclideanDistance(p3, q3) <= delta)
+                if (Point.EuclideanDistance(p3, q3) <= delta)
                 {
                     return (p3, q3);
                 }
-                else if(Point.EuclideanDistance(p2, q2) == delta)
+                else if (Point.EuclideanDistance(p2, q2) == delta)
                 {
                     return (p2, q2);
                 }
@@ -64,15 +64,15 @@ namespace StanfordAlgsPart1
             }
         }
 
-        static (Point[], Point[]) DivideP(Point[] HalfOfP, Point[] PSorted)
+        private static (Point[], Point[]) DivideP(Point[] HalfOfP, Point[] PSorted)
         {
             Point[] outLeft = new Point[HalfOfP.Length];
             int li = 0;
             Point[] outRight = new Point[PSorted.Length - HalfOfP.Length];
             int ri = 0;
-            for(int i = 0; i<PSorted.Length; i++)
+            for (int i = 0; i < PSorted.Length; i++)
             {
-                if(HalfOfP.Contains(PSorted[i]))
+                if (HalfOfP.Contains(PSorted[i]))
                 {
                     outLeft[li] = PSorted[i];
                     li++;
@@ -87,7 +87,7 @@ namespace StanfordAlgsPart1
             return (outLeft, outRight);
         }
 
-        static (Point, Point) ClosestSplitPair(Point[] PX, Point[] PY, double d)
+        private static (Point, Point) ClosestSplitPair(Point[] PX, Point[] PY, double d)
         {
             Point p1 = null; // Pointers to best pair we've found
             Point p2 = null;
@@ -99,25 +99,25 @@ namespace StanfordAlgsPart1
             double xBar = (double)PX[xBarIndex].X;
             (float xMin, float xMax) = ((float)(xBar - d), (float)(xBar + d)); // Midpoint of X, +- the previous smallest distance between points.
             List<Point> Sy = new List<Point>();
-            
+
             // Generate Sy, a list of points sorted by Y value for which the x value is between xMin and xMax
             // Throw out all values for which the X distance is greater than delta
             // If they're close together but on the same half, they'll be picked up earlier and don't matter to this. A split pair will be < delta from the center line in X.
-            for(int i = 0; i<PY.Length; i++)
+            for (int i = 0; i < PY.Length; i++)
             {
-                if(PY[i].X > xMin && PY[i].X < xMax)
+                if (PY[i].X > xMin && PY[i].X < xMax)
                 {
                     Sy.Add(PY[i]);
                 }
             }
 
             // For some vague reason, a point in Sy's split pair that's < than delta
-            // will always be within 8 points of its pair point. 
-            for (int i = 0; i<Sy.Count - 1; i++)
+            // will always be within 8 points of its pair point.
+            for (int i = 0; i < Sy.Count - 1; i++)
             {
-                for(int j = 1; j < Math.Min(Sy.Count - i, 8); j++) // This makes it linear time - this iteration is not dependent on N
+                for (int j = 1; j < Math.Min(Sy.Count - i, 8); j++) // This makes it linear time - this iteration is not dependent on N
                 {
-                    if (Point.EuclideanDistance(Sy[i], Sy[i+j]) < best) // If the distance between [i], [i+j] is less than our best, make it our best. J is always < 8.
+                    if (Point.EuclideanDistance(Sy[i], Sy[i + j]) < best) // If the distance between [i], [i+j] is less than our best, make it our best. J is always < 8.
                     {
                         best = Point.EuclideanDistance(Sy[i], Sy[i + j]);
                         p1 = Sy[i];
@@ -128,8 +128,6 @@ namespace StanfordAlgsPart1
 
             // Return our best points, possibly null.
             return (p1, p2);
-
-
         }
 
         public static (Point, Point) BaseCase(Point[] arr)
@@ -151,24 +149,24 @@ namespace StanfordAlgsPart1
             }
             return (a, b);
         }
-
-        
     }
 
     public class Point : IComparable<Point>
     {
         public float X { get; }
         public float Y { get; }
+
         public Point(float x, float y)
         {
             X = x;
             Y = y;
         }
+
         public int CompareTo(Point to) // This can be refined
         {
             return (int)EuclideanDistance(this, to);
         }
-        
+
         public static double EuclideanDistance(Point a, Point b)
         {
             if (a == null || b == null) return Double.NaN;

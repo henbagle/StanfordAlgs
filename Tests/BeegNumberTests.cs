@@ -29,11 +29,9 @@ namespace Tests
             test.SubtractFrom(new BeegNumber(2));
             Assert.AreEqual("3", test.String);
 
-
             test = new BeegNumber(321);
             test.SubtractFrom(new BeegNumber(23));
             Assert.AreEqual("298", test.String);
-
         }
 
         [TestMethod]
@@ -46,7 +44,6 @@ namespace Tests
 
             test.Pad(0);
             Assert.AreEqual("120", test.String);
-
 
             test.Pad(4);
             Assert.AreEqual("1200000", test.String);

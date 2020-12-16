@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StanfordAlgsPart1
 {
@@ -10,7 +8,7 @@ namespace StanfordAlgsPart1
         // Multiplies large numbers as strings using the BeegNumber.
         public static string KaratsubaMultiply(string x, string y)
         {
-            if(Math.Min(y.Length, x.Length) == 0)
+            if (Math.Min(y.Length, x.Length) == 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -27,9 +25,9 @@ namespace StanfordAlgsPart1
             string[] x1, y1;
 
             int maxLength = Math.Max(x.Length, y.Length);
-            if(maxLength %2 == 1)
+            if (maxLength % 2 == 1)
             {
-                if(x[0].Equals('0') && y[0].Equals('0'))
+                if (x[0].Equals('0') && y[0].Equals('0'))
                 {
                     maxLength--;
                     x = x.Substring(1);
@@ -49,15 +47,12 @@ namespace StanfordAlgsPart1
                 y = "0" + y;
             }
 
-
             x1 = SplitIntInHalf(x);
             y1 = SplitIntInHalf(y);
             a = new BeegNumber(x1[0]);
             b = new BeegNumber(x1[1]);
             c = new BeegNumber(y1[0]);
             d = new BeegNumber(y1[1]);
-
-
 
             BeegNumber ac = new BeegNumber(KaratsubaMultiply(a.String, c.String));
             BeegNumber bd = new BeegNumber(KaratsubaMultiply(b.String, d.String));
@@ -75,7 +70,6 @@ namespace StanfordAlgsPart1
             BeegNumber total = BeegNumber.AddVal(subt, bd);
             total.AddTo(ac);
             return (total.String);
-
         }
 
         public static string[] SplitIntInHalf(string i)
