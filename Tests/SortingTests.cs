@@ -46,11 +46,11 @@ namespace Tests
         [TestMethod]
         public void MergeSort_CorrectlySorts()
         {
-            CollectionAssert.AreEqual(sortedArr, Sorts.MergeSort(notSortedArr));
-            CollectionAssert.AreEqual(sortedArr, Sorts.MergeSort(reverseArr));
-            CollectionAssert.AreEqual(sortedArr, Sorts.MergeSort(sortedArr));
-            CollectionAssert.AreEqual(equalArr, Sorts.MergeSort(equalArr));
-            CollectionAssert.AreEqual(negativeArrSorted, Sorts.MergeSort(negativeArr));
+            CollectionAssert.AreEqual(sortedArr, MergeSort.Sort(notSortedArr));
+            CollectionAssert.AreEqual(sortedArr, MergeSort.Sort(reverseArr));
+            CollectionAssert.AreEqual(sortedArr, MergeSort.Sort(sortedArr));
+            CollectionAssert.AreEqual(equalArr, MergeSort.Sort(equalArr));
+            CollectionAssert.AreEqual(negativeArrSorted, MergeSort.Sort(negativeArr));
         }
     }
 }

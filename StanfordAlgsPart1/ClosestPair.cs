@@ -13,8 +13,8 @@ namespace StanfordAlgsPart1
         public ClosestPair(Point[] P)
         {
             if (P.Length <= 1) throw new ArgumentException("Input list must have at least 2 points");
-            XRanked = Sorts.MergeSort(P, (A, B) => { return (int)(A.X - B.X); });
-            YRanked = Sorts.MergeSort(P, (A, B) => { return (int)(A.Y - B.Y); });
+            XRanked = MergeSort.Sort(P, (A, B) => { return (int)(A.X - B.X); });
+            YRanked = MergeSort.Sort(P, (A, B) => { return (int)(A.Y - B.Y); });
         }
 
         public (Point, Point) FindClosestPair()
@@ -33,7 +33,7 @@ namespace StanfordAlgsPart1
             }
             else
             {
-                (Point[] leftX, Point[] rightX) = Sorts.SplitArrayInHalf(PX); // Get the left and right half of all poimts
+                (Point[] leftX, Point[] rightX) = MergeSort.SplitArrayInHalf(PX); // Get the left and right half of all poimts
                 (Point[] leftY, Point[] rightY) = DivideP(leftX, PY); // Extract a sorted-by-Y array containing all values from the left half and the right half
                 // This happens in Linear time. I don't believe it.
                 // leftY is all the values in leftX but sorted by Y. rightY is the same.
@@ -64,6 +64,7 @@ namespace StanfordAlgsPart1
             }
         }
 
+        // Returns still-sorted subset of PSorted that contains all the values from HalfOfP
         private static (Point[], Point[]) DivideP(Point[] HalfOfP, Point[] PSorted)
         {
             Point[] outLeft = new Point[HalfOfP.Length];
