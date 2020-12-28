@@ -5,7 +5,6 @@ namespace StanfordAlgsPart1
     public class MergeSort
     {
         // WEEK 1 - Implemented independently
-        // Todo: Can we use generic Arrays/IComparable[] to sort instead of int[]?
 
         public static T[] Sort<T>(T[] arr)
             where T : IComparable<T>
