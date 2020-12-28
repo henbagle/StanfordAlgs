@@ -4,8 +4,22 @@ namespace StanfordAlgsPart1
 {
     public class QuickSort
     {
+        // Why'd I do it like this? I wish I knew.
+        public static T[] Sort<T>(T[] arr)
+            where T : IComparable<T>
+        {
+            // My QuickSort implementation sorts in place by default (to "save memory")
+            // To make it not do that, we just gotta make a copy of the original array.
+            T[] result = new T[arr.Length];
+            Array.Copy(arr, result, arr.Length);
+
+            SortInPlace(ref result);
+
+            return result;
+        }
+
         // Mutates original array
-        public static void Sort<T>(ref T[] arr)
+        public static void SortInPlace<T>(ref T[] arr)
             where T : IComparable<T>
         {
             Sort(ref arr, 0, arr.Length);

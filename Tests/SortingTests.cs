@@ -60,12 +60,21 @@ namespace Tests
         [TestMethod]
         public void QuickSort_CorrectlySorts()
         {
-            QuickSort.Sort(ref notSortedArr);
-            QuickSort.Sort(ref reverseArr);
-            QuickSort.Sort(ref sortedArr);
-            QuickSort.Sort(ref equalArr);
-            QuickSort.Sort(ref negativeArr);
-            QuickSort.Sort(ref small1);
+            CollectionAssert.AreEqual(sortedArr, QuickSort.Sort(notSortedArr));
+            CollectionAssert.AreEqual(sortedArr, QuickSort.Sort(reverseArr));
+            CollectionAssert.AreEqual(sortedArr, QuickSort.Sort(sortedArr));
+            CollectionAssert.AreEqual(equalArr, QuickSort.Sort(equalArr));
+            CollectionAssert.AreEqual(negativeArrSorted, QuickSort.Sort(negativeArr));
+        }
+
+        [TestMethod]
+        public void QuickSort_CorrectlySortsInPlace()
+        {
+            QuickSort.SortInPlace(ref notSortedArr);
+            QuickSort.SortInPlace(ref reverseArr);
+            QuickSort.SortInPlace(ref sortedArr);
+            QuickSort.SortInPlace(ref equalArr);
+            QuickSort.SortInPlace(ref negativeArr);
 
             CollectionAssert.AreEqual(sortedArr, notSortedArr);
             CollectionAssert.AreEqual(sortedArr, reverseArr);
