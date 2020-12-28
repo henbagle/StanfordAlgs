@@ -11,21 +11,20 @@ namespace StanfordAlgsPart1
     // Division is stupid. We don't do that here.
     public class BeegNumber
     {
-        private string _str;
         public bool isNeg = false; // This doesn't do anything
-        public string String { get => _str; }
+        public string String { get; private set; }
 
         // Two overloaded constructors
         public BeegNumber(string number)
         {
             if (number[0] == '-')
             {
-                _str = number.Substring(1);
+                String = number.Substring(1);
                 isNeg = true;
             }
             else
             {
-                _str = number;
+                String = number;
             }
         }
 
@@ -35,7 +34,7 @@ namespace StanfordAlgsPart1
             {
                 isNeg = true;
             }
-            _str = Math.Abs(number).ToString();
+            String = Math.Abs(number).ToString();
         }
 
         public int Length()
@@ -46,7 +45,7 @@ namespace StanfordAlgsPart1
         // Wrapper for AddVal
         public void AddTo(BeegNumber a)
         {
-            _str = AddVal(this, a).String;
+            String = AddVal(this, a).String;
         }
 
         // Adds this beegNumber with the input BeegNumber, returns a string
@@ -174,12 +173,12 @@ namespace StanfordAlgsPart1
             string newVal = SubtractVal(this, a);
             if (newVal[0].Equals('-'))
             {
-                _str = newVal.Substring(1);
+                String = newVal.Substring(1);
                 isNeg = true;
             }
             else
             {
-                _str = newVal;
+                String = newVal;
                 isNeg = false;
             }
         }
@@ -196,7 +195,7 @@ namespace StanfordAlgsPart1
             {
                 zeros += "0";
             }
-            _str = String + zeros;
+            String = String + zeros;
         }
 
         private static char[] ReverseStringToArray(BeegNumber r)
