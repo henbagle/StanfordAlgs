@@ -50,21 +50,9 @@ namespace StanfordAlgsPart1
             int p = ChoosePivot(ref arr, s, e);
             p = Partition(ref arr, s + p, s, e);
 
+            // Sort both halves
             Sort(ref arr, s, p);
             Sort(ref arr, p + 1, e);
-            //// Slice the first and second halves
-            //T[] A = new T[p2];
-            //Array.Copy(partitioned, A, A.Length);
-            //T[] B = new T[partitioned.Length - p2];
-            //Array.Copy(partitioned, p2, B, 0, B.Length);
-
-            //// Sort those two halves
-            //T[] SortedA = Sort(A);
-            //T[] SortedB = Sort(B);
-
-            //// Put them back
-            //Array.Copy(SortedA, partitioned, SortedA.Length);
-            //Array.Copy(SortedB, 0, partitioned, p2, SortedB.Length);
 
             // Return
             return;
