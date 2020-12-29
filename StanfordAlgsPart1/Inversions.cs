@@ -37,7 +37,7 @@ namespace StanfordAlgsPart1
             }
             else
             {
-                (Array leftArr, Array rightArr) = MergeSort.SplitArrayInHalf(arr);
+                (Array leftArr, Array rightArr) = SortUtils.SplitArrayInHalf(arr);
                 int[] left = (int[])leftArr;
                 int[] right = (int[])rightArr; // this kills the programmer
 

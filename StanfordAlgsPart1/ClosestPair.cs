@@ -33,7 +33,7 @@ namespace StanfordAlgsPart1
             }
             else
             {
-                (Point[] leftX, Point[] rightX) = MergeSort.SplitArrayInHalf(PX); // Get the left and right half of all poimts
+                (Point[] leftX, Point[] rightX) = SortUtils.SplitArrayInHalf(PX); // Get the left and right half of all poimts
                 (Point[] leftY, Point[] rightY) = DivideP(leftX, PY); // Extract a sorted-by-Y array containing all values from the left half and the right half
                 // This happens in Linear time. I don't believe it.
                 // leftY is all the values in leftX but sorted by Y. rightY is the same.
