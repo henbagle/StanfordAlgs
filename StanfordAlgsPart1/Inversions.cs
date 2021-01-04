@@ -16,7 +16,7 @@ namespace StanfordAlgsPart1
         private int[] arr; // This gets mutated and sorted
 
         public BigInteger invCount;
-        public Tuple<int, int>[] inversions; // Using tuples was a dumbo idea (i stopped, this should only ever be length 0 now)
+        public Tuple<int, int>[] inversions = new Tuple<int, int>[0]; // Using tuples was a dumbo idea (i stopped, this should only ever be length 0 now)
 
         public int CountInversions()
         {
@@ -26,20 +26,15 @@ namespace StanfordAlgsPart1
         public Inversions(int[] arrIn)
         {
             arr = new int[arrIn.Length];
-            //originalArr = new int[arrIn.Length];
             arr = arrIn;
-            //originalArr = arrIn;
 
             if (arr.Length <= 1)
             {
                 invCount = new BigInteger(0);
-                inversions = new Tuple<int, int>[0];
             }
             else
             {
-                (Array leftArr, Array rightArr) = SortUtils.SplitArrayInHalf(arr);
-                int[] left = (int[])leftArr;
-                int[] right = (int[])rightArr; // this kills the programmer
+                (int[] left, int[] right) = SortUtils.SplitArrayInHalf(arr);
 
                 // Recursively check left side, right side, split inversions
                 Inversions leftInvs = new Inversions(left);
