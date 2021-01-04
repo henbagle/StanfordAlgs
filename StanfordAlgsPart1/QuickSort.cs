@@ -1,10 +1,12 @@
 ﻿using System;
+using StanfordAlgsPart1;
 
 namespace StanfordAlgsPart1
 {
     public class QuickSort
     {
-        // Why'd I do it like this? I wish I knew.
+        private static Random _rand = new Random();
+
         public static T[] Sort<T>(T[] arr)
             where T : IComparable<T>
         {
@@ -22,10 +24,10 @@ namespace StanfordAlgsPart1
         public static void SortInPlace<T>(ref T[] arr)
             where T : IComparable<T>
         {
-            Sort(ref arr, 0, arr.Length);
+            SortRange(ref arr, 0, arr.Length);
         }
 
-        public static void Sort<T>(ref T[] arr, int s, int e)
+        private static void SortRange<T>(ref T[] arr, int s, int e)
         where T : IComparable<T>
         {
             // Base Case
@@ -33,35 +35,46 @@ namespace StanfordAlgsPart1
             {
                 return;
             }
-            else if (e - s == 2)
-            {
-                if (arr[s].CompareTo(arr[s + 1]) <= 0)
-                {
-                    return;
-                }
-                else
-                {
-                    (arr[s], arr[s + 1]) = (arr[s + 1], arr[s]);
-                    return;
-                }
-            }
 
             // Choose a pivot and partion the array around that point
             int p = ChoosePivot(ref arr, s, e);
-            p = Partition(ref arr, s + p, s, e);
+            p = Partition(ref arr, p, s, e);
 
             // Sort both halves
-            Sort(ref arr, s, p);
-            Sort(ref arr, p + 1, e);
+            SortRange(ref arr, s, p);
+            SortRange(ref arr, p + 1, e);
 
             // Return
             return;
         }
 
+        public static int SortRangeCountComparisons<T>(ref T[] arr, int s, int e)
+        where T : IComparable<T>
+        {
+            // Base Case
+            if (e - s <= 1)
+            {
+                return 0;
+            }
+
+            // Choose a pivot and partion the array around that point
+            int p = ChoosePivot(ref arr, s, e);
+            p = Partition(ref arr, p, s, e);
+
+            int comps = e - s - 1;
+
+            // Sort both halves
+            comps += SortRangeCountComparisons(ref arr, s, p);
+            comps += SortRangeCountComparisons(ref arr, p + 1, e);
+
+            // Return
+            return comps;
+        }
+
         private static int Partition<T>(ref T[] arr, int pivotIndex, int s, int e)
             where T : IComparable<T>
         {
-            // Pre-processing step: Put the pivot in the first element of the list
+            // Pre-processing step: Put the pivot in the first element of the list (bottom of the range, s)
             T pivot = arr[pivotIndex];
             arr[pivotIndex] = arr[s];
             arr[s] = pivot;
@@ -78,6 +91,7 @@ namespace StanfordAlgsPart1
 
                 if (arr[j].CompareTo(pivot) <= 0)
                 {
+                    // If this element is less than the pivot, swap it with i and increase i
                     if (startSwapping) // This prevents unecessary swaps
                     {
                         (arr[i], arr[j]) = (arr[j], arr[i]);
@@ -90,16 +104,17 @@ namespace StanfordAlgsPart1
                 }
             }
 
+            // Put the pivot back where it belongs
             (arr[s], arr[i - 1]) = (arr[i - 1], arr[s]);
 
-            // Returns a tuple: The partitoned array, and the new index of the pivot point
+            // Returns the new index of the pivot point
             return i - 1;
         }
 
         private static int ChoosePivot<T>(ref T[] arr, int s, int e)
             where T : IComparable<T>
         {
-            return 1;
+            return _rand.Next(s, e);
         }
     }
 }
