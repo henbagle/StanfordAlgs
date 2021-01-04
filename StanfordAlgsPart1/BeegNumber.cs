@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StanfordAlgsPart1
+namespace Part1
 {
     // WEEK 1 - PROBLEM SET 1
 

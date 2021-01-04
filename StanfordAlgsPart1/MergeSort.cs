@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StanfordAlgsPart1
+namespace Part1
 {
     public class MergeSort
     {

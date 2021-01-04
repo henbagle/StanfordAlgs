@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StanfordAlgsPart1;
+using Part1;
 using System;
 
 namespace Part1Tests

@@ -1,4 +1,4 @@
-﻿namespace StanfordAlgsPart1
+﻿namespace Part1
 {
     // WEEK 2 - Implemented independently
     public class Search

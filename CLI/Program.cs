@@ -1,5 +1,5 @@
 ﻿using System;
-using StanfordAlgsPart1;
+using Part1;
 
 namespace StanfordAlgsCLI
 {

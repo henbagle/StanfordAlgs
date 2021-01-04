@@ -1,9 +1,10 @@
 ﻿using System;
 
-namespace StanfordAlgsPart1
+namespace Part1
 {
     public class Sorts
     {
+        // WEEK 1 - Implemented to remind myself of what these three actually do
         public static int[] SelectionSort(int[] arr)
         {
             // Create a shallow copy

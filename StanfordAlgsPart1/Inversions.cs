@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace StanfordAlgsPart1
+namespace Part1
 {
     // WEEK 2 - SECTION 3
     public class Inversions
