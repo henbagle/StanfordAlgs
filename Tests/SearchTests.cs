@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StanfordAlgsPart1;
 
-namespace Tests
+namespace Part1Tests
 {
     [TestClass]
     public class SearchTests

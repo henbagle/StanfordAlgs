@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StanfordAlgsPart1\StanfordAlgsPart1.csproj" />
+    <ProjectReference Include="..\StanfordAlgsPart1\Part1.csproj" />
   </ItemGroup>
 
 </Project>

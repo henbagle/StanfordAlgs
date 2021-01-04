@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StanfordAlgsPart1;
 
-namespace Tests
+namespace Part1Tests
 {
     [TestClass]
     public class SortingTests
@@ -12,10 +12,6 @@ namespace Tests
         private int[] equalArr = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         private int[] negativeArr = { -1, 0, 5, -10, 20, 13, -7, 3, 2, -3 };
         private int[] negativeArrSorted = { -10, -7, -3, -1, 0, 2, 3, 5, 13, 20 };
-
-        private int[] small1 = { 3, 4, 1, 5, 2 };
-
-        private int[] smallSorted1 = { 1, 2, 3, 4, 5 };
 
         [TestMethod]
         public void BubbleSort_CorrectlySorts()

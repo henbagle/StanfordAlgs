@@ -2,7 +2,7 @@
 using StanfordAlgsPart1;
 using System;
 
-namespace Tests
+namespace Part1Tests
 {
     [TestClass]
     public class KaratsubaTests
