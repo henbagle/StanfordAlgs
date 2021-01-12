@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Part1
+namespace StanfordAlgs
 {
     // Divide and Conquer algorithm for finding the closest pair of an array of points
     public class ClosestPair

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Part1
+namespace StanfordAlgs
 {
     public class Sorts
     {

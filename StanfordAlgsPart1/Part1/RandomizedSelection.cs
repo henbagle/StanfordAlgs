@@ -1,7 +1,7 @@
-﻿using Part1;
+﻿using StanfordAlgs;
 using System;
 
-namespace Part1
+namespace StanfordAlgs
 {
     // WEEK 4
     // Input: Array with distinct numbers, similar input to sorting algorithms

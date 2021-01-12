@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Part1
+namespace StanfordAlgs
 {
     // WEEK 4 - Optional implementation of the deterministic selection algorithm via median-of-medians
     // O(n), but has larger coefficients and uses more memory than the in-place randomized algorithm.

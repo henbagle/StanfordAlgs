@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Part1
+namespace StanfordAlgs
 {
     public class SortUtils
     {

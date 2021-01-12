@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Part1
+namespace StanfordAlgs
 {
     // WEEK 3 - PROBLEM SET 3
     public class QuickSort
