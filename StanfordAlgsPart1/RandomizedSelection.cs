@@ -6,13 +6,13 @@ namespace Part1
     // WEEK 4
     // Input: Array with distinct numbers, similar input to sorting algorithms
     // Output: ith order statistic. EG {10, 8, 2, 4}, 3rd order statistic is 8.
-    public class Selection
+    public class RandomizedSelection
     {
-        private static Random _rand = new Random();
+        private static readonly Random _rand = new Random();
 
         // Absolute worst case (unlikely): O(n^2)
         // Absolute best and average case: O(n)
-        public static T RandomizedSelection<T>(T[] arr, int i)
+        public static T Select<T>(T[] arr, int i)
             where T : IComparable<T>
         {
             T[] copy = new T[arr.Length];
@@ -20,6 +20,7 @@ namespace Part1
             return RSelect(ref copy, i, 0, copy.Length);
         }
 
+        // Internal recursable Randomized Selection. Takes in start and end sub-array indexes.
         private static T RSelect<T>(ref T[] arr, int i, int s, int e)
             where T : IComparable<T>
         {

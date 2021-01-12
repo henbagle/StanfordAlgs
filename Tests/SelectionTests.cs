@@ -16,12 +16,23 @@ namespace Part1Tests
         [TestMethod]
         public void RandomizedSelection_Works()
         {
-            Assert.AreEqual(13, Selection.RandomizedSelection(sortedArr, 13));
-            Assert.AreEqual(13, Selection.RandomizedSelection(reverseArr, 13));
-            Assert.AreEqual(20, Selection.RandomizedSelection(reverseArr, 20));
-            Assert.AreEqual(20, Selection.RandomizedSelection(sortedArr, 20));
-            Assert.AreEqual(1, Selection.RandomizedSelection(sortedArr, 1));
-            Assert.AreEqual(0, Selection.RandomizedSelection(negativeArr, 5));
+            Assert.AreEqual(13, RandomizedSelection.Select(sortedArr, 13));
+            Assert.AreEqual(13, RandomizedSelection.Select(reverseArr, 13));
+            Assert.AreEqual(20, RandomizedSelection.Select(reverseArr, 20));
+            Assert.AreEqual(20, RandomizedSelection.Select(sortedArr, 20));
+            Assert.AreEqual(1, RandomizedSelection.Select(sortedArr, 1));
+            Assert.AreEqual(0, RandomizedSelection.Select(negativeArr, 5));
+        }
+
+        [TestMethod]
+        public void DeterministicSelection_Works()
+        {
+            Assert.AreEqual(13, DeterministicSelection.Select(reverseArr, 13));
+            Assert.AreEqual(13, DeterministicSelection.Select(sortedArr, 13));
+            Assert.AreEqual(20, DeterministicSelection.Select(reverseArr, 20));
+            Assert.AreEqual(20, DeterministicSelection.Select(sortedArr, 20));
+            Assert.AreEqual(1, DeterministicSelection.Select(sortedArr, 1));
+            Assert.AreEqual(0, DeterministicSelection.Select(negativeArr, 5));
         }
     }
 }
