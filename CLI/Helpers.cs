@@ -41,5 +41,17 @@ namespace StanfordAlgsCLI
 
             return output.ToArray();
         }
+
+        public static string[] GetLinesFromFile(string location)
+        {
+            List<string> output = new List<string>();
+            StreamReader reader = new StreamReader(location);
+            while (!reader.EndOfStream)
+            {
+                output.Add(reader.ReadLine());
+            }
+
+            return output.ToArray();
+        }
     }
 }

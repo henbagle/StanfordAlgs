@@ -3,53 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StanfordAlgs.Graphs;
 
 namespace StanfordAlgs
 {
     // PART 1 WEEK 4
     // Random Contraction algorithm for finding the minimum cut
-    internal class MinimumCut
+    public class MinimumCut
     {
-    }
+        private static Random _rand = new Random();
 
-    public class Graph
-    {
-        public List<Node> nodes = new List<Node>();
-        public List<Edge> edges = new List<Edge>();
-
-        public int addNode(int value)
+        public static int GetMinimumCut<T>(AdjacencyListGraph<T> g)
         {
-            nodes.Add(new Node(value));
-            return nodes.Count - 1;
+            int NUM_TRIALS = (int)Math.Pow(g.NodeCount, 2);
+            int result = g.EdgeCount;
+            AdjacencyListGraph<T> gc;
+
+            // Run this a lot of times
+            for (int i = 0; i < NUM_TRIALS; i++)
+            {
+                // Create a deep clone of the original graph and run a trial
+                gc = g.Clone();
+                int trialResult = MinCutTrial(gc);
+                //if (i % 100 == 0) Console.WriteLine($"Trial: {i}, Result: {result}");
+                if (trialResult < result) result = trialResult;
+            }
+
+            if (result == g.EdgeCount) throw new Exception("Something went wrong.");
+            else return result;
         }
 
-        public void createEdge(int from, int to)
+        private static int MinCutTrial<T>(AdjacencyListGraph<T> g)
         {
-            Edge newE = new Edge(nodes[from], nodes[to]);
-            nodes[from].e.Add(newE);
-            nodes[to].e.Add(newE);
-            edges.Add(newE);
-        }
-    }
+            while (g.NodeCount > 2)
+            {
+                // Contract random edges until there are only two nodes left
+                int edgeID = _rand.Next(0, g.EdgeCount);
+                Edge<T> edge = g.E.ElementAt(edgeID);
+                g.Contract(edge);
+            }
 
-    public class Node
-    {
-        public int val { get; set; }
-        public List<Edge> e = new List<Edge>();
-
-        public Node(int v = 0)
-        {
-            val = v;
-        }
-    }
-
-    public struct Edge
-    {
-        public (Node, Node) nodes { get; }
-
-        public Edge(Node from, Node to)
-        {
-            nodes = (from, to);
+            return g.EdgeCount;
         }
     }
 }
