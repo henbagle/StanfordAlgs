@@ -21,16 +21,16 @@ namespace Part2Tests
             Assert.AreEqual(1, g.GetNode(0).Val);
             Assert.AreEqual(4, g.NodeCount);
 
-            g.AddEdge(0, 1);
-            g.AddEdge(1, 2);
-            g.AddEdge(2, 3);
-            g.AddEdge(3, 0);
+            g.AddEdgeBetweenIndices(0, 1);
+            g.AddEdgeBetweenIndices(1, 2);
+            g.AddEdgeBetweenIndices(2, 3);
+            g.AddEdgeBetweenIndices(3, 0);
 
             Assert.AreEqual(4, g.EdgeCount);
             Assert.AreEqual(10, g.GetNode(nodeId).Val);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => { g.GetNode(-1); });
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => { g.GetNode(4); });
+            Assert.ThrowsException<ArgumentException>(() => { g.GetNode(-1); });
+            Assert.ThrowsException<ArgumentException>(() => { g.GetNode(4); });
         }
 
         [TestMethod]
@@ -41,15 +41,15 @@ namespace Part2Tests
             g.AddNode(5);
             g.AddNode(7);
             g.AddNode(10);
-            g.AddEdge(0, 1);
-            g.AddEdge(1, 2);
-            g.AddEdge(2, 3);
-            g.AddEdge(3, 0);
+            g.AddEdgeBetweenIndices(0, 1);
+            g.AddEdgeBetweenIndices(1, 2);
+            g.AddEdgeBetweenIndices(2, 3);
+            g.AddEdgeBetweenIndices(3, 0);
 
             Assert.AreEqual(2, g.GetNode(0).AdjacentNodeCount());
             Assert.AreEqual(1, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
 
-            g.AddEdge(0, 1);
+            g.AddEdgeBetweenIndices(0, 1);
             Assert.AreEqual(2, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
         }
 
@@ -60,26 +60,26 @@ namespace Part2Tests
             g.AddNode(0);
             g.AddNode(1);
 
-            g.AddEdge(0, 1);
+            g.AddEdgeBetweenIndices(0, 1);
 
             Assert.AreEqual(1, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(1, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(1, g.EdgeCount);
 
-            g.AddEdge(1, 0);
+            g.AddEdgeBetweenIndices(1, 0);
 
             Assert.AreEqual(2, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(2, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(2, g.GetNode(1).AdjacentNodeCount()); // Fix this behavior
             Assert.AreEqual(2, g.EdgeCount);
 
-            g.RemoveEdge(0, 1);
+            g.RemoveEdgeBetween(0, 1);
 
             Assert.AreEqual(1, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(1, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(1, g.EdgeCount);
 
-            g.RemoveEdge(0, 1);
+            g.RemoveEdgeBetween(0, 1);
 
             Assert.AreEqual(0, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(0, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
@@ -93,31 +93,31 @@ namespace Part2Tests
             g.AddNode(0);
             g.AddNode(1);
 
-            g.AddEdge(0, 1);
+            g.AddEdgeBetweenIndices(0, 1);
 
             Assert.AreEqual(1, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(0, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(1, g.EdgeCount);
 
-            g.AddEdge(1, 0);
+            g.AddEdgeBetweenIndices(1, 0);
 
             Assert.AreEqual(1, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(1, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(2, g.EdgeCount);
 
-            g.AddEdge(1, 0);
+            g.AddEdgeBetweenIndices(1, 0);
 
             Assert.AreEqual(1, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(2, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(3, g.EdgeCount);
 
-            g.RemoveEdge(0, 1);
+            g.RemoveEdgeBetween(0, 1);
 
             Assert.AreEqual(0, g.GetNode(0).ParallelNodeCount(g.GetNode(1)));
             Assert.AreEqual(2, g.GetNode(1).ParallelNodeCount(g.GetNode(0)));
             Assert.AreEqual(2, g.EdgeCount);
 
-            Assert.ThrowsException<ArgumentException>(() => { g.RemoveEdge(0, 1); });
+            Assert.ThrowsException<ArgumentException>(() => { g.RemoveEdgeBetween(0, 1); });
         }
 
         [TestMethod]
@@ -130,14 +130,14 @@ namespace Part2Tests
             g.AddNode(3);
             g.AddNode(4);
 
-            g.RemoveNode(1);
+            g.RemoveNodeAtIndice(1);
             Assert.AreEqual(2, g.GetNode(2).Val);
-            Assert.ThrowsException<Exception>(() => { g.GetNode(1); });
-            Assert.ThrowsException<Exception>(() => { g.AddEdge(0, 1); });
+            Assert.ThrowsException<ArgumentException>(() => { g.GetNode(1); });
+            Assert.ThrowsException<ArgumentException>(() => { g.AddEdgeBetweenIndices(0, 1); });
 
-            g.AddEdge(2, 3);
-            g.AddEdge(3, 4);
-            g.RemoveNode(2);
+            g.AddEdgeBetweenIndices(2, 3);
+            g.AddEdgeBetweenIndices(3, 4);
+            g.RemoveNodeAtIndice(2);
             Assert.AreEqual(1, g.GetNode(3).AdjacentNodeCount());
         }
 
@@ -148,16 +148,15 @@ namespace Part2Tests
             g.AddNode(0);
             g.AddNode(5);
             g.AddNode(10);
-            g.AddEdge(0, 1);
-            g.AddEdge(0, 2);
-            g.RemoveNode(1);
+            g.AddEdgeBetweenIndices(0, 1);
+            g.AddEdgeBetweenIndices(0, 2);
+            g.RemoveNodeAtIndice(1);
 
             AdjacencyListGraph<int> h = g.Clone();
-            Assert.AreEqual(10, h.GetNode(2).Val);
-            Assert.AreEqual(1, h.GetNode(2).AdjacentNodeCount());
-            Assert.ThrowsException<Exception>(() => { h.GetNode(1); });
-            Assert.AreNotEqual(g.GetNode(2), h.GetNode(2));
-            Assert.AreEqual(g.GetNode(2).Val, h.GetNode(2).Val);
+            Assert.AreEqual(10, h.GetNode(1).Val);
+            Assert.AreEqual(1, h.GetNode(1).AdjacentNodeCount());
+            Assert.AreNotEqual(g.GetNode(2), h.GetNode(1));
+            Assert.AreEqual(g.GetNode(2).Val, h.GetNode(1).Val);
         }
     }
 }

@@ -20,11 +20,26 @@ namespace StanfordAlgs.Graphs
 
         public bool Has(Node<T> i)
         {
+            // Returns whether or not you can use this edge to get to the specified node
+            if (Directed)
+            {
+                return (Item2 == i);
+            }
+            else
+            {
+                return (Item1 == i || Item2 == i);
+            }
+        }
+
+        public bool HasIgnoreDirection(Node<T> i)
+        {
+            // Returns true if this edge goes to or from the specified node
             return (Item1 == i || Item2 == i);
         }
 
         public bool Has(Node<T> i, Node<T> i2)
         {
+            // Returns if the node goes from the first node to the second node
             if (Directed)
             {
                 return (Item1 == i && Item2 == i2);
@@ -35,9 +50,16 @@ namespace StanfordAlgs.Graphs
             }
         }
 
+        public bool CanTraverseFrom(Node<T> i)
+        {
+            if (!Directed) return Has(i);
+            else return (i == Item1);
+        }
+
         public Node<T> Not(Node<T> i)
         {
-            if (!Has(i)) throw new ArgumentException("Node is not in edge");
+            // Returns the opposite node from the node you input, regardless of directionality
+            if (!HasIgnoreDirection(i)) throw new ArgumentException("Node is not in edge");
             if (Item1 != i) return i;
             else return Item2;
         }

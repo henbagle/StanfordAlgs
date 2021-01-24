@@ -13,45 +13,43 @@ namespace StanfordAlgs.Graphs
 
         public HashSet<Edge<T>> E { get; }
 
+        public override int NodeCount { get { return V.Count; } } // Problem: Count includes deleted nodes
+        public int EdgeCount { get { return E.Count; } }
+
         public AdjacencyListGraph(bool directed = false) : base(directed)
         {
             V = new List<Node<T>>();
             E = new HashSet<Edge<T>>();
         }
 
-        public override int NodeCount { get { return V.Count; } } // Problem: Count includes deleted nodes
-        public int EdgeCount { get { return E.Count; } }
-
-        public override void AddEdge(int v1, int v2, int weight = 1)
+        public override void AddEdgeBetweenIndices(int v1, int v2, int weight = 1)
         {
-            if (v1 >= V.Count || v2 >= V.Count || v1 < 0 || v2 < 0)
+            if (v1 < 0 || v2 < 0)
             {
-                throw new ArgumentOutOfRangeException("Vertices are out of bounds");
+                throw new ArgumentException("Vertices are out of bounds");
             }
+            AddEdge(GetNode(v1), GetNode(v2), weight);
+        }
 
+        public Edge<T> AddEdge(Node<T> n1, Node<T> n2, int weight = 1)
+        {
             if (weight != 1) throw new NotImplementedException("Non-one weights not currently implemented");
+            if (n1 == n2) throw new ArgumentException("Not allowed to create self loops"); // Except when you are
 
-            // Don't allow us to create self-loop edges
-            if (v1 != v2)
-            {
-                Edge<T> newE = new Edge<T>(GetNode(v1), GetNode(v2), Directed);
-                E.Add(newE);
+            Edge<T> newE = new Edge<T>(n1, n2, Directed);
+            n1.AddEdge(newE);
+            n2.AddEdge(newE);
+            E.Add(newE);
 
-                // Add the new edge to at least one node
-                GetNode(v1).AddEdge(newE);
-                if (this.Directed == false)
-                {
-                    GetNode(v2).AddEdge(newE);
-                }
-            }
+            return newE;
         }
 
         // Remove an edge between two vertice indexes
-        public void RemoveEdge(int v1, int v2)
+        public void RemoveEdgeBetween(int v1, int v2)
         {
-            if (v1 >= V.Count || v2 >= V.Count || v1 < 0 || v2 < 0)
+            if (v1 < 0 || v2 < 0)
             {
-                throw new ArgumentOutOfRangeException("Vertices are out of bounds");
+                throw new ArgumentException("Vertices are out of bounds");
             }
 
             Node<T> n1 = GetNode(v1);
@@ -75,15 +73,12 @@ namespace StanfordAlgs.Graphs
         // Overload of RemoveEdge that works directly by reference
         public void RemoveEdge(Edge<T> edge)
         {
-            if (!E.Contains(edge)) throw new ArgumentException("Edge does not exist");
+            if (!E.Contains(edge)) throw new ArgumentException("Edge does not exist in this graph");
 
             E.Remove(edge);
 
             edge.Item1.RemoveEdge(edge);
-            if (Directed == false)
-            {
-                edge.Item2.RemoveEdge(edge);
-            }
+            edge.Item2.RemoveEdge(edge);
         }
 
         public int AddNode(T val)
@@ -93,42 +88,100 @@ namespace StanfordAlgs.Graphs
             return newNode.nodeID;
         }
 
-        private int AddNode()
-        {
-            // Add valueless node. Used when deep cloning.
-            Node<T> newNode = new Node<T>(V.Count);
-            V.Add(newNode);
-            return newNode.nodeID;
-        }
-
         public Node<T> GetNode(int id)
         {
-            if (id < 0 || id >= V.Count) throw new ArgumentOutOfRangeException("Non-existant Node ID");
-            if (V.ElementAt(id) == null) throw new Exception("Node has been deleted");
-            return V.ElementAt(id);
+            if (id < 0) throw new ArgumentException("Non-existant Node ID");
+            Node<T> node = V.Find((Node<T> n) => (n.nodeID == id)); // We have to do this because you can delete nodes :(
+            if (node == null) throw new ArgumentException("Node does not exist.");
+            else return node;
         }
 
-        public void RemoveNode(int id)
+        public void RemoveNodeAtIndice(int id)
         {
-            if (id < 0 || id >= V.Count) throw new ArgumentOutOfRangeException("Non-existant Node ID");
-            if (V.ElementAt(id) == null) throw new Exception("Node has already been deleted");
+            if (id < 0) throw new ArgumentException("Non-existant Node ID");
 
             // Find every edge that accesses this node. This could be refined on an undirected graph.
-            List<Edge<T>> edgesForRemoval = new List<Edge<T>>();
+            Node<T> nodeToDelete = GetNode(id);
+            RemoveNode(nodeToDelete);
+        }
 
-            foreach (Edge<T> edge in E)
-            {
-                if (edge.Item1 == GetNode(id) || edge.Item2 == GetNode(id)) { edgesForRemoval.Add(edge); }
-            }
-
-            // Remove that edge
-            foreach (Edge<T> edge in edgesForRemoval)
+        public void RemoveNode(Node<T> n)
+        {
+            foreach (Edge<T> edge in n.e)
             {
                 RemoveEdge(edge);
             }
+            V.Remove(n);
+        }
 
-            // Remove this node. We keep the position in the list so as to not move other nodes around.
-            V[id] = null;
+        public List<Node<T>> BFSWhere(Predicate<Node<T>> criteria, Node<T> start, bool findOne = false)
+        {
+            List<Node<T>> output = new List<Node<T>>();
+            Queue<Node<T>> queue = new Queue<Node<T>>();
+            HashSet<Node<T>> visited = new HashSet<Node<T>>();
+
+            queue.Enqueue(start);
+            visited.Add(start);
+
+            while (queue.Count > 0)
+            {
+                Node<T> node = queue.Dequeue();
+
+                if (criteria(node))
+                {
+                    output.Add(node);
+                    if (findOne) return output;
+                }
+
+                foreach (Edge<T> e in node.e)
+                {
+                    Node<T> edgeTarget = e.Not(node);
+                    if (!visited.Contains(edgeTarget))
+                    {
+                        queue.Enqueue(edgeTarget);
+                        visited.Add(edgeTarget);
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        public List<Node<T>> DFSWhere(Predicate<Node<T>> criteria, Node<T> start, bool findOne = false)
+        {
+            List<Node<T>> output = new List<Node<T>>();
+            HashSet<Node<T>> visited = new HashSet<Node<T>>();
+
+            start.DFS(criteria, ref visited, ref output);
+
+            if (findOne && output.Count > 0)
+            {
+                Node<T> outNode = output[0];
+                output = new List<Node<T>>();
+                output.Add(outNode);
+            }
+            return output;
+        }
+
+        public List<(Node<T>, int)> TopologicalSort()
+        {
+            // Graph MUST be: Acyclic, all connected together
+            // Heyyyy this doesn't work!
+            if (!Directed) throw new NotSupportedException("Cannot topologically sort an undirected graph");
+
+            List<(Node<T>, int)> output = new List<(Node<T>, int)>();
+            HashSet<Node<T>> visited = new HashSet<Node<T>>();
+            int count = V.Count - 1;
+
+            foreach (Node<T> n in V)
+            {
+                if (!visited.Contains(n))
+                {
+                    n.TopologicalSortDFS(ref count, ref visited, ref output);
+                }
+            }
+
+            return output;
         }
 
         public void Contract(Edge<T> toContract)
@@ -162,33 +215,29 @@ namespace StanfordAlgs.Graphs
 
             // Remove Item2
             toContract.Item2.e = new HashSet<Edge<T>>(); // This is just for safety
-            V[toContract.Item2.nodeID] = null;
+            RemoveNode(toContract.Item2);
         }
 
         // Deep clone of graphs
+        // Will NOT preserve nodeIDs if any nodes have been deleted
         public AdjacencyListGraph<T> Clone()
         {
             AdjacencyListGraph<T> newGraph = new AdjacencyListGraph<T>(directed: this.Directed);
+            Dictionary<int, int> mapToNew = new Dictionary<int, int>();
 
             // Copy every value to a new node in the new graph
             foreach (Node<T> node in V)
             {
-                // Handle deleted nodes (can't add null to a list, want to keep all nodeIDs the same)
-                if (node == null)
-                {
-                    int del = newGraph.AddNode();
-                    newGraph.RemoveNode(del);
-                }
-                else
-                {
-                    newGraph.AddNode(node.Val);
-                }
+                int newID = newGraph.AddNode(node.Val);
+                mapToNew.Add(node.nodeID, newID);
             }
 
             // Re-create every edge
             foreach (Edge<T> edge in E)
             {
-                newGraph.AddEdge(edge.Item1.nodeID, edge.Item2.nodeID);
+                Node<T> i1 = newGraph.V[mapToNew[edge.Item1.nodeID]];
+                Node<T> i2 = newGraph.V[mapToNew[edge.Item2.nodeID]];
+                newGraph.AddEdge(i1, i2);
             }
 
             return newGraph;

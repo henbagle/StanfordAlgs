@@ -8,14 +8,14 @@ namespace StanfordAlgs
 {
     public abstract class GraphBase<T>
     {
-        protected readonly bool Directed;
+        public readonly bool Directed;
 
         public GraphBase(bool directed = false)
         {
             this.Directed = directed;
         }
 
-        public abstract void AddEdge(int v1, int v2, int weight = 1);
+        public abstract void AddEdgeBetweenIndices(int v1, int v2, int weight = 1);
 
         public abstract int NodeCount { get; }
     }

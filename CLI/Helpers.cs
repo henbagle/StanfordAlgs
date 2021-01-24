@@ -74,10 +74,30 @@ namespace StanfordAlgsCLI
                     {
                         if (!graph.GetNode(node - 1).IsConnectedTo(graph.GetNode(to - 1)))
                         {
-                            graph.AddEdge(node - 1, to - 1);
+                            graph.AddEdgeBetweenIndices(node - 1, to - 1);
                         }
                     }
                 }
+            }
+
+            return graph;
+        }
+
+        public static AdjacencyListGraph<int> BuildDirectedGraphFromFile(string location, char separator, int nodeCount)
+        {
+            AdjacencyListGraph<int> graph = new AdjacencyListGraph<int>(directed: true);
+            string[] lines = GetLinesFromFile(location);
+            for (int i = 0; i < nodeCount; i++)
+            {
+                graph.AddNode(i + 1);
+            }
+
+            foreach (string line in lines)
+            {
+                string[] elements = line.Split(separator);
+                int from = int.Parse(elements[0]);
+                int to = int.Parse(elements[1]);
+                graph.AddEdgeBetweenIndices(from - 1, to - 1);
             }
 
             return graph;
